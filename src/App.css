@@ -1,0 +1,26 @@
+/* .quill {
+    height: 100%;
+}
+
+.ql-container.ql-snow {
+    border: none;
+}
+
+.ql-toolbar {
+    display: none;
+}
+
+.active-toolbar > .ql-toolbar {
+    position: absolute;
+    top: -58.6px;
+    left: -2px;
+    background: #fff;
+    z-index: 800;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 1px rgba(133,133,133,0.66);
+    color: var(--platform-metallic);
+}
+
+.hidden-toolbar > .ql-toolbar {
+    display: none;
+} */

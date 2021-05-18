@@ -1,5 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import styled from 'styled-components/macro'
+
+import './App.css'
 
 const Table = styled.table`
   position: relative;
@@ -21,14 +25,14 @@ const TableCell = styled.td`
   height: ${props => props.height}px;
   width: ${props => props.width}px;
   text-align: left;
-  background-color: #dddddd;
+  background-color: ${props => props.active ? 'lightblue' : '#f8f5f5'};
 `
 
 const TextInput = styled.textarea`
   // outline: none;
   // border: none;
   // margin: 0;
-  background: #dddddd;
+  background: none;
   outline:none;
   resize:none;
   border: none;
@@ -46,8 +50,9 @@ const Resizer = styled.div`
   width: 5px;
   cursor: col-resize;
   user-select: none;
+  border-radius: 10px;
   &:hover {
-    border-right: 2px solid blue;
+    border-right: 2px solid #a0a0a0;
   }
 `
 
@@ -113,6 +118,7 @@ export const App = props => {
     let data = [...table.data]
     data.splice(table.active.row + 1, 0, new Array(table.cols.length).fill(''))
 
+    // debugger
     updateTable(prevState => ({
       ...prevState, 
       active: {
@@ -143,12 +149,12 @@ export const App = props => {
   }
 
   const onChangeCell = (value, row_index, cell_index) => {
-    let data_copy = table.data.map(row => Object.assign([], row))
-    data_copy[row_index][cell_index] = value
+    let data = [...table.data]
+    data[row_index][cell_index] = value
 
     updateTable(prevState => ({
       ...prevState, 
-      data: data_copy
+      data: data
     }))
   }
 
@@ -195,7 +201,7 @@ export const App = props => {
       <button onClick={removeCol}>-Remove column</button>
       <button onClick={addRow}>+Add row</button>
       <button onClick={removeRow}>-Remove row</button>
-
+      {/* <CustomToolbar /> */}
       <Table ref={table_ref}>
         <thead>
           <tr>
@@ -213,10 +219,11 @@ export const App = props => {
           {table.data.map((row, row_index) => (
             <TableRow key={row_index}>
               {row.map((cell, cell_index) => (
-                  <TableCell 
+                  <TableCell
                     key={cell_index}
                     height={table.rows[row_index]}
                     width={table.cols[cell_index]}
+                    active={row_index === table.active.row && cell_index === table.active.col}
                     onClick={evt => setActiveCell(row_index, cell_index)}
                   >
                     <TextInput
